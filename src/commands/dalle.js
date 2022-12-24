@@ -1,17 +1,19 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('dalle')
-		.setDescription('replies with dalle generated images using user prompt'),
+		.setDescription('replies with dalle generated images using user prompt')
+        .addStringOption(option =>
+			option
+				.setName('prompt')
+				.setDescription('Enter a prompt for dalle')),
 	async execute(interaction, openai) {
-        const response = dalle_request(openai);
+        console.log(interaction.options.getString('prompt'));
 		await interaction.reply('Done');
 	},
 };
 
 async function dalle_request(openai) {
-    const response = await openai.listModels();
-    const json = JSON.parse(response);
-    console.log(json.data);
+
 }
