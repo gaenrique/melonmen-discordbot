@@ -5,7 +5,6 @@ const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token, openAiKey } = require('../config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
