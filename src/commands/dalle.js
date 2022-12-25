@@ -9,11 +9,17 @@ module.exports = {
 				.setName('prompt')
 				.setDescription('Enter a prompt for dalle')),
 	async execute(interaction, openai) {
-        console.log(interaction.options.getString('prompt'));
-		await interaction.reply('Done');
+        await interaction.deferReply();
+        const image_url = await fetchImageUrl(interaction, openai);
+        await interaction.editReply(image_url);
 	},
 };
 
-async function dalle_request(openai) {
-
+async function fetchImageUrl(interaction, openai) {
+    const response = await openai.createImage({
+        prompt: interaction.options.getString('prompt'),
+        n: 1,
+        size: "512x512",
+    });
+    return response.data.data[0].url;
 }
