@@ -2,20 +2,20 @@ const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('dalle')
-		.setDescription('replies with dalle generated images using user prompt')
+		.setName('chatgpt')
+		.setDescription('OpenAIs text completion API')
         .addStringOption(option =>
 			option
 				.setName('prompt')
-				.setDescription('Enter a prompt for dalle')
+				.setDescription('Enter a prompt for the davinci model')
                 .setRequired(true)),
 	async execute(interaction, openai) {
         await interaction.deferReply();
         const prompt = interaction.options.getString('prompt');
         fetchResponse(interaction, openai)
             .then(response => {
-                const image_url = response.data.data[0].url;
-                interaction.editReply(prompt + " " + image_url);
+                interaction.editReply("Prompt: " + prompt + "\n\n" 
+                    + "Response: " + response.data.choices[0].text);
             })
             .catch(error => {
                 interaction.editReply(error.response.statusText);
@@ -24,9 +24,10 @@ module.exports = {
 };
 
 async function fetchResponse(interaction, openai) {
-    return await openai.createImage({
+    return await openai.createCompletion({
+        model: "text-davinci-003",
         prompt: interaction.options.getString('prompt'),
-        n: 1,
-        size: "512x512",
+        max_tokens: 1000,
+        temperature: 0.5,
     });
 }
