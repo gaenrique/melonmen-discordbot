@@ -10,16 +10,21 @@ module.exports = {
 				.setDescription('Enter a prompt for dalle')),
 	async execute(interaction, openai) {
         await interaction.deferReply();
-        const image_url = await fetchImageUrl(interaction, openai);
-        await interaction.editReply(image_url);
+        fetchResponse(interaction, openai)
+            .then(response => {
+                const image_url = response.data.data[0].url;
+                interaction.editReply(image_url);
+            })
+            .catch(error => {
+                interaction.editReply(error.response.statusText);
+            });
 	},
 };
 
-async function fetchImageUrl(interaction, openai) {
-    const response = await openai.createImage({
+async function fetchResponse(interaction, openai) {
+    return await openai.createImage({
         prompt: interaction.options.getString('prompt'),
         n: 1,
         size: "512x512",
     });
-    return response.data.data[0].url;
 }
