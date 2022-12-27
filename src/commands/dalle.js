@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('@discordjs/builders');
 const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
 
 module.exports = {
@@ -15,7 +16,10 @@ module.exports = {
         fetchResponse(interaction, openai)
             .then(response => {
                 const image_url = response.data.data[0].url;
-                interaction.editReply(prompt + " " + image_url);
+                const embed = new EmbedBuilder()
+                    .setTitle("Prompt: " + prompt)
+                    .setImage(image_url);
+                interaction.editReply({ embeds: [embed] });
             })
             .catch(error => {
                 interaction.editReply(error.response.statusText);
