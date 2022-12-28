@@ -34,6 +34,6 @@ async function fetchResponse(interaction, openai) {
         model: "text-davinci-003",
         prompt: interaction.options.getString('prompt'),
         max_tokens: 1000,
-        temperature: 0.5,
+        temperature: 0.1,
     });
 }
