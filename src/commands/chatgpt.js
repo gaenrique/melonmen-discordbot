@@ -20,8 +20,8 @@ module.exports = {
         const prompt = interaction.options.getString('prompt');
         fetchResponse(interaction, openai)
             .then(response => {
-                interaction.editReply("Prompt: " + prompt + "\n\n" 
-                    + "Response: " + response.data.choices[0].text);
+                interaction.editReply(`Prompt: ${prompt} \n\n` +
+                    `Response:${response.data.choices[0].text}`);
             })
             .catch(error => {
                 interaction.editReply(error.response.statusText);
