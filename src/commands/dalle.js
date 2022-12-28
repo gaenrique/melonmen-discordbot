@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
+const checkChatId = require('./utils/checkChatId');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,6 +12,10 @@ module.exports = {
 				.setDescription('Enter a prompt for dalle')
                 .setRequired(true)),
 	async execute(interaction, openai) {
+        if (!checkChatId.isAiChat(interaction)) {
+            await interaction.reply('Wrong chat homie. Use #ai-shit');
+            return;
+        }
         await interaction.deferReply();
         const prompt = interaction.options.getString('prompt');
         fetchResponse(interaction, openai)
