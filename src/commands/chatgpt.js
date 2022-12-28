@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
+const { aiChatId } = require('../../config.json')
 const checkChatId = require('./utils/checkChatId');
 
 module.exports = {
