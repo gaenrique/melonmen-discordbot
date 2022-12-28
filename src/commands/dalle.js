@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { SlashCommandBuilder, IntegrationApplication } = require('discord.js');
+const { aiChatId } = require('../../config.json')
 const checkChatId = require('./utils/checkChatId');
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
                 .setRequired(true)),
 	async execute(interaction, openai) {
         if (!checkChatId.isAiChat(interaction)) {
-            await interaction.reply('Wrong chat homie. Use #ai-shit');
+            await interaction.reply(`Wrong chat homie. Use <#${aiChatId}>`);
             return;
         }
         await interaction.deferReply();
